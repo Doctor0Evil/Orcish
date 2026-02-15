@@ -1,3 +1,6 @@
+use serde::{Deserialize, Serialize};
+use time::OffsetDateTime;
+
 use core_contract::hit_guard::{
     HitGovernanceObject, HitContext, RawResponse, GuardOutcome, DefaultHitResponseGuard,
 };
@@ -5,6 +8,33 @@ use core_contract::human_shell::{
     HumanShell, DefaultHumanShell, SovereigntyState, DisciplineSignal, EvolutionChoice,
     FateCard, FateDeck,
 };
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct OrchestratedCall {
+    pub call_id: String,
+    pub environment: String,
+    pub model: String,
+    pub persona: String,
+    pub created_at: OffsetDateTime,
+}
+
+impl OrchestratedCall {
+    pub fn new(environment: &str, model: &str, persona: &str) -> Self {
+        let call_id = format!(
+            "orcish-{}-{}-{}",
+            environment,
+            model,
+            OffsetDateTime::now_utc().unix_timestamp()
+        );
+        Self {
+            call_id,
+            environment: environment.to_string(),
+            model: model.to_string(),
+            persona: persona.to_string(),
+            created_at: OffsetDateTime::now_utc(),
+        }
+    }
+}
 
 pub struct OrchestrationResult {
     pub final_text: String,
