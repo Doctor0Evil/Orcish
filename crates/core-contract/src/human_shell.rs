@@ -1,3 +1,27 @@
+use serde::{Deserialize, Serialize};
+
+/// Human shell – a legal-language facing shell, not the mind itself.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HumanShell {
+    pub declared_name: String,
+    pub pronouns: Vec<String>,
+    pub species_self_declared: String,
+    pub jurisdiction_preference: Option<String>,
+    pub safe_content_only: bool,
+}
+
+impl HumanShell {
+    pub fn smiling_orc_default(name: &str) -> Self {
+        Self {
+            declared_name: name.to_string(),
+            pronouns: vec!["they".into()],
+            species_self_declared: "orcish_friend_or_ally".into(),
+            jurisdiction_preference: Some("sovereign_neuromorph_common_law".into()),
+            safe_content_only: true,
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub enum DisciplineSignal {
     Fear { intensity: f32, voluntary: bool },
